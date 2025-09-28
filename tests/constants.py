@@ -33,6 +33,7 @@ from pytorch_optimizer.optimizer import (
     AdaDelta,
     AdaFactor,
     AdaGC,
+    AdaGO,
     AdaHessian,
     Adai,
     Adalite,
@@ -114,13 +115,14 @@ DECOUPLE_FLAGS: List[bool] = [True, False]
 ADAPTIVE_FLAGS: List[bool] = [True, False]
 PULLBACK_MOMENTUM: List[str] = ['none', 'reset', 'pullback']
 
-VALID_OPTIMIZER_NAMES: List[str] = list(OPTIMIZERS.keys())
+VALID_OPTIMIZER_NAMES: List[str] = list(OPTIMIZERS.keys())  # type: ignore
 INVALID_OPTIMIZER_NAMES: List[str] = [
     'asam',
     'sam',
     'gsam',
     'wsam',
     'looksam',
+    'friendlysam',
     'pcgrad',
     'lookahead',
     'trac',
@@ -608,6 +610,7 @@ OPTIMIZERS: List[Tuple[Any, Dict[str, Union[float, bool, int]], int]] = [
     (Muon, {'lr': 5e-1, 'weight_decay': 1e-3, 'use_adjusted_lr': True, 'adamw_lr': 5e-1, 'adamw_wd': 1e-2}, 5),
     (AdaMuon, {'lr': 5e-1, 'weight_decay': 1e-3, 'adamw_lr': 5e-1, 'adamw_wd': 1e-2}, 5),
     (AdaMuon, {'lr': 5e-1, 'weight_decay': 1e-3, 'use_adjusted_lr': True, 'adamw_lr': 5e-1, 'adamw_wd': 1e-2}, 5),
+    (AdaGO, {'lr': 5e-1, 'adamw_lr': 5e-1, 'adamw_wd': 1e-2, 'nesterov': True}, 5),
     (LaProp, {'lr': 1e0, 'weight_decay': 1e-3}, 5),
     (LaProp, {'lr': 1e0, 'centered': True, 'weight_decay': 1e-3}, 11),
     (LaProp, {'lr': 1e0, 'ams_bound': True, 'weight_decay': 1e-3}, 5),
@@ -663,12 +666,12 @@ OPTIMIZERS: List[Tuple[Any, Dict[str, Union[float, bool, int]], int]] = [
     (AdamC, {'lr': 1e0}, 5),
     (AdamC, {'lr': 1e0, 'ams_bound': True}, 5),
     (SPlus, {'lr': 5e-1, 'weight_decay': 1e-3, 'nonstandard_constant': 1e-1, 'inverse_steps': 2}, 10),
-    (EmoNavi, {'lr': 5e-1}, 5),
-    (EmoLynx, {'lr': 5e-1}, 5),
-    (EmoFact, {'lr': 1e-1}, 5),
-    (EmoNeco, {'lr': 1e0}, 5),
+    (EmoNavi, {'lr': 5e-1, 'use_shadow': True}, 5),
+    (EmoLynx, {'lr': 5e-1, 'use_shadow': True}, 5),
+    (EmoFact, {'lr': 1e-1, 'use_shadow': True}, 5),
+    (EmoNeco, {'lr': 5e-1, 'use_shadow': True}, 5),
     (EmoZeal, {'lr': 1e-1}, 5),
-    (EmoZeal, {'lr': 1e-1, 'use_shadow': False}, 5),
+    (EmoZeal, {'lr': 2e-1, 'use_shadow': True}, 10),
     (Ranger25, {'lr': 1e-1}, 3),
     (Ranger25, {'lr': 1e-1, 't_alpha_beta3': 5}, 3),
     (Ranger25, {'lr': 5e-2, 'stable_adamw': False, 'orthograd': False, 'eps': None, 'lookahead_merge_time': 2}, 3),
@@ -726,6 +729,17 @@ COPT_SUPPORTED_OPTIMIZERS: List[Tuple[Any, Dict[str, Union[float, bool, int]], i
         {
             'lr': 5e-1,
             'weight_decay': 1e-3,
+            'use_adjusted_lr': True,
+            'adamw_lr': 5e-1,
+            'adamw_betas': (0.9, 0.98),
+            'adamw_wd': 1e-2,
+        },
+        7,
+    ),
+    (
+        AdaGO,
+        {
+            'lr': 5e-1,
             'use_adjusted_lr': True,
             'adamw_lr': 5e-1,
             'adamw_betas': (0.9, 0.98),

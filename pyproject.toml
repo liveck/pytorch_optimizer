@@ -15,10 +15,10 @@ keywords = [
     "AdaSmooth", "AdEMAMix", "Simplified-AdEMAMix", "ADOPT", "AdaHessian", "Adai", "Adalite", "AdaLomo", "AdamMini",
     "AdamP", "AdamS", "Adan", "AggMo", "Aida", "AliG", "Amos", "Apollo", "APOLLO", "AvaGrad", "bSAM", "CAME",
     "DAdaptAdaGrad", "DAdaptAdam", "DAdaptAdan", "DAdaptSGD", "DAdaptLion", "DeMo", "DiffGrad", "EmoFact", "EmoLynx",
-    "EmoNavi", "EmoNeco", "EmoZeal", "EXAdam", "FAdam", "Fira", "FOCUS", "Fromage", "FTRL", "GaLore", "Grams",
-    "Gravity", "GrokFast", "GSAM", "Kate", "Lamb", "LaProp", "LARS", "Lion", "LOMO", "Lookahead", "MADGRAD", "MARS",
-    "MSVAG", "Muno", "Nero", "NovoGrad", "OrthoGrad", "PAdam", "PCGrad", "PID", "PNM", "Prodigy", "PSGD", "QHAdam",
-    "QHM", "RACS", "RAdam", "Ranger", "Ranger21", "RotoGrad", "SAM", "GCSAM", "LookSAM", "ScheduleFreeSGD",
+    "EmoNavi", "EmoNeco", "EmoZeal", "EXAdam", "FAdam", "Fira", "FOCUS", "FriendlySAM", "Fromage", "FTRL", "GaLore",
+    "Grams", "Gravity", "GrokFast", "GSAM", "Kate", "Lamb", "LaProp", "LARS", "Lion", "LOMO", "Lookahead", "MADGRAD",
+    "MARS", "MSVAG", "Muno", "Nero", "NovoGrad", "OrthoGrad", "PAdam", "PCGrad", "PID", "PNM", "Prodigy", "PSGD",
+    "QHAdam", "QHM", "RACS", "RAdam", "Ranger", "Ranger21", "RotoGrad", "SAM", "GCSAM", "LookSAM", "ScheduleFreeSGD",
     "ScheduleFreeAdamW", "ScheduleFreeRAdam", "SCION", "SGDP", "Shampoo", "ScalableShampoo", "SGDW", "SignSGD", "SM3",
     "SOAP", "SopihaH", "SPAM", "StableSPAM", "SPlus", "SRMM", "StableAdamW", "SWATS", "TAM", "Tiger", "TRAC", "VSGD",
     "WSAM", "Yogi", "BCE", "BCEFocal", "Focal", "FocalCosine", "SoftF1", "Dice", "LDAM", "Jaccard", "Bi-Tempered",
@@ -62,6 +62,7 @@ black = [
     { version = "^25", python = ">=3.9" },
 ]
 ruff = "^0.12"
+pyright = "^1.1"
 pytest = "^8"
 pytest-cov = [
     { version = "<6", python = "<3.9" },
@@ -126,6 +127,34 @@ max-branches = 17
 
 [tool.ruff.format]
 quote-style = "single"
+
+[tool.pyright]
+include = ["pytorch_optimizer", "examples"]
+exclude = [
+    "./pytorch_optimizer/optimizer/adam_mini.py",
+    "./pytorch_optimizer/optimizer/demo.py",
+    "./pytorch_optimizer/optimizer/rotograd.py",
+]
+reportArgumentType = false
+reportAssignmentType = false
+reportAttributeAccessIssue = false
+reportCallIssue = false
+reportIncompatibleMethodOverride = false
+reportIncompatibleVariableOverride = false
+reportIndexIssue = false
+reportMissingImports = false
+reportMissingTypeStubs = false
+reportOperatorIssue = false
+reportOptionalIterable = false
+reportOptionalMemberAccess = false
+reportOptionalOperand = false
+reportOptionalSubscript = false
+reportPossiblyUnboundVariable = false
+reportPrivateImportUsage = false
+reportRedeclaration = false
+reportReturnType = false
+pythonVersion = "3.12"
+pythonPlatform = "Linux"
 
 [tool.pytest.ini_options]
 testpaths = "tests"

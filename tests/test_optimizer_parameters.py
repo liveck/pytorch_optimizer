@@ -7,6 +7,7 @@ from pytorch_optimizer.optimizer import (
     BSAM,
     SAM,
     WSAM,
+    FriendlySAM,
     Lookahead,
     LookSAM,
     PCGrad,
@@ -88,7 +89,7 @@ def test_lookahead_parameters():
         Lookahead(optimizer, pullback_momentum='invalid')
 
 
-@pytest.mark.parametrize('optimizer', [SAM, WSAM, LookSAM, BSAM])
+@pytest.mark.parametrize('optimizer', [SAM, WSAM, LookSAM, BSAM, FriendlySAM])
 def test_sam_family_methods(optimizer):
     base_optimizer = load_optimizer('lion')
 
@@ -258,7 +259,7 @@ def test_galore_projection_type():
         GaLoreProjector.get_orthogonal_matrix(p, 1, projection_type='std')
 
 
-@pytest.mark.parametrize('optimizer_name', ['Muon', 'AdaMuon'])
+@pytest.mark.parametrize('optimizer_name', ['Muon', 'AdaMuon', 'AdaGO'])
 def test_muon_use_muon_param(optimizer_name):
     with pytest.raises(ValueError):
         load_optimizer(optimizer_name)([Example().parameters()])

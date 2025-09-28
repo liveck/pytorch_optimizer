@@ -32,6 +32,10 @@
     :docstring:
     :members:
 
+::: pytorch_optimizer.AdaGO
+    :docstring:
+    :members:
+
 ::: pytorch_optimizer.AdaHessian
     :docstring:
     :members:
@@ -225,6 +229,10 @@
     :members:
 
 ::: pytorch_optimizer.FOCUS
+    :docstring:
+    :members:
+
+::: pytorch_optimizer.FriendlySAM
     :docstring:
     :members:
 
