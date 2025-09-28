@@ -67,7 +67,7 @@ from pytorch_optimizer.optimizer.lookahead import Lookahead
 from pytorch_optimizer.optimizer.madgrad import MADGRAD
 from pytorch_optimizer.optimizer.mars import MARS
 from pytorch_optimizer.optimizer.msvag import MSVAG
-from pytorch_optimizer.optimizer.muon import AdaMuon, DistributedMuon, Muon, prepare_muon_parameters
+from pytorch_optimizer.optimizer.muon import AdaGO, AdaMuon, DistributedMuon, Muon, prepare_muon_parameters
 from pytorch_optimizer.optimizer.nero import Nero
 from pytorch_optimizer.optimizer.novograd import NovoGrad
 from pytorch_optimizer.optimizer.orthograd import OrthoGrad
@@ -84,7 +84,7 @@ from pytorch_optimizer.optimizer.radam import RAdam
 from pytorch_optimizer.optimizer.ranger import Ranger
 from pytorch_optimizer.optimizer.ranger21 import Ranger21
 from pytorch_optimizer.optimizer.rotograd import RotoGrad
-from pytorch_optimizer.optimizer.sam import BSAM, GSAM, SAM, WSAM, LookSAM
+from pytorch_optimizer.optimizer.sam import BSAM, GSAM, SAM, WSAM, FriendlySAM, LookSAM
 from pytorch_optimizer.optimizer.schedulefree import (
     ScheduleFreeAdamW,
     ScheduleFreeRAdam,
@@ -129,6 +129,7 @@ OPTIMIZER_LIST: List[OPTIMIZER] = [
     AdaDelta,
     AdaFactor,
     AdaGC,
+    AdaGO,
     AdaHessian,
     AdaLOMO,
     AdaMax,
@@ -370,7 +371,7 @@ def create_optimizer(
         optimizer = optimizer_class(parameters, max_lr=lr, **kwargs)
     elif optimizer_name in ('lomo', 'adalomo', 'adammini'):
         optimizer = optimizer_class(model, lr=lr, **kwargs)
-    elif optimizer_name in ('muon', 'adamuon'):
+    elif optimizer_name in ('muon', 'adamuon', 'adago'):
         warn(f'highly recommend you to manually create the {optimizer_name} manually.', UserWarning, 1)
 
         optimizer = prepare_muon_parameters(model, optimizer_name, lr=lr, weight_decay=weight_decay, **kwargs)
@@ -448,8 +449,8 @@ def get_optimizer_parameters(
 def get_supported_optimizers(filters: Optional[Union[str, List[str]]] = None) -> List[str]:
     r"""Return list of available optimizer names, sorted alphabetically.
 
-    :param filters: Optional[Union[str, List[str]]]. wildcard filter string that works with fmatch. if None, it will
-        return the whole list.
+    :param filters: Optional[Union[str, List[str]]]. wildcard filter string that works with fmatch.
+        if None, it will return the whole list.
     """
     if filters is None:
         return sorted(OPTIMIZERS.keys())
